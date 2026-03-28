@@ -1,0 +1,11 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+httpx==0.28.1
+pydantic==2.11.7
+pydantic-settings==2.10.1
+python-dotenv==1.1.1
+numpy==2.2.6
+scikit-learn==1.7.1
+torch==2.0.1
+transformers==4.35.0
+sentence-transformers==2.2.2

@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # VeriGraph Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "5000:5000"
+      - "8888:8888"  # Jupyter
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+      - DEVICE=cpu  # Use CPU for local development
+      - CACHE_TYPE=redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - .:/app
+      - /app/.venv  # Exclude venv from sync
+    depends_on:
+      - redis
+    command: python app.py
+    networks:
+      - verigraph-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - verigraph-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: Database for storing verification history
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=verigraph
+      - POSTGRES_PASSWORD=verigraph_dev
+      - POSTGRES_DB=verigraph
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - verigraph-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verigraph"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis-data:
+  postgres-data:
+
+networks:
+  verigraph-network:
+    driver: bridge
