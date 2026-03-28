@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #031019;
+  --foreground: #e8f4fb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-heading);
+  --font-mono: var(--font-body-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-heading), sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at 20% 20%, rgba(62, 192, 245, 0.28), transparent 46%),
+    radial-gradient(circle at 80% 10%, rgba(87, 241, 201, 0.2), transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(255, 129, 93, 0.2), transparent 42%),
+    linear-gradient(140deg, #031019, #072332 60%, #0a1a25);
+  background-size: 140% 140%;
+  animation: gradientShift 12s ease-in-out infinite alternate;
+}
+
+.glass {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 20%;
+  }
+  100% {
+    background-position: 100% 80%;
+  }
+}
