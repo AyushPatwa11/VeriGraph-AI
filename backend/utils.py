@@ -8,8 +8,7 @@ Utility functions for VeriGraph backend
 
 import uuid
 from typing import Tuple, List, Dict, Any
-import numpy as np
-import torch
+import statistics
 
 
 def generate_request_id() -> str:
@@ -29,7 +28,11 @@ def normalize_score(value: float, min_val: float = 0.0, max_val: float = 100.0) 
     Returns:
         Normalized score
     """
-    return np.clip(value, min_val, max_val)
+    try:
+        import numpy as np
+        return float(np.clip(value, min_val, max_val))
+    except Exception:
+        return float(max(min_val, min(max_val, value)))
 
 
 def calculate_confidence(scores: List[float]) -> float:
@@ -45,10 +48,21 @@ def calculate_confidence(scores: List[float]) -> float:
     if not scores:
         return 0.5
     
-    variance = np.var(scores)
+    try:
+        import numpy as np
+        variance = float(np.var(scores))
+    except Exception:
+        mean = statistics.mean(scores)
+        variance = sum((s - mean) ** 2 for s in scores) / len(scores)
+
     # Lower variance = higher confidence
     confidence = 1.0 / (1.0 + variance)
-    return float(np.clip(confidence, 0.0, 1.0))
+    # clip between 0 and 1
+    if confidence < 0.0:
+        confidence = 0.0
+    if confidence > 1.0:
+        confidence = 1.0
+    return float(confidence)
 
 
 def truncate_text(text: str, max_tokens: int = 128) -> str:
@@ -76,12 +90,17 @@ def get_device() -> torch.device:
     Returns:
         torch.device object
     """
-    if torch.cuda.is_available():
-        return torch.device("cuda")
-    elif torch.backends.mps.is_available():
-        return torch.device("mps")  # Metal Performance Shaders for macOS
-    else:
-        return torch.device("cpu")
+    try:
+        import torch
+        if torch.cuda.is_available():
+            return torch.device("cuda")
+        elif getattr(torch.backends, "mps", None) is not None and torch.backends.mps.is_available():
+            return torch.device("mps")
+        else:
+            return torch.device("cpu")
+    except Exception:
+        # torch not available; return a simple string fallback
+        return "cpu"
 
 
 def batch_iterator(items: List[Any], batch_size: int = 32):
@@ -172,4 +191,9 @@ def calculate_source_credibility_weight(
     weights = [w / sum(weights) for w in weights]
     
     weighted_avg = sum(c * w for c, w in zip(credibilities, weights))
-    return float(np.clip(weighted_avg, 0.0, 1.0))
+    # clip between 0 and 1 without numpy
+    if weighted_avg < 0.0:
+        weighted_avg = 0.0
+    if weighted_avg > 1.0:
+        weighted_avg = 1.0
+    return float(weighted_avg)

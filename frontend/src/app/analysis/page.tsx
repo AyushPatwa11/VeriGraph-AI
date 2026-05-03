@@ -13,6 +13,7 @@ import { PropagationSpread } from "@/components/PropagationSpread";
 import { LiveAmplificationFeed } from "@/components/LiveAmplificationFeed";
 import { Footer } from "@/components/Footer";
 import type { AnalysisResult } from "@/types/analysis";
+import { analyzeClaim } from "@/lib/api";
 
 interface AmplificationPost {
   id: string;
@@ -34,6 +35,9 @@ export default function AnalysisPage() {
   const [propagationMetrics, setPropagationMetrics] = useState<any>(null);
   const [amplificationPosts, setAmplificationPosts] = useState<AmplificationPost[]>([]);
   const [loadingPropagation, setLoadingPropagation] = useState(false);
+  const [manualQuery, setManualQuery] = useState("");
+  const [manualLoading, setManualLoading] = useState(false);
+  const [manualError, setManualError] = useState("");
 
   const fetchPropagationMetrics = async (query: string) => {
     setLoadingPropagation(true);
@@ -84,6 +88,39 @@ export default function AnalysisPage() {
     try {
       const raw = window.sessionStorage.getItem("verigraph.analysis");
       if (!raw) {
+        // No session result — try to read query from URL (?q=...) and call backend
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get("q");
+        if (q && q.trim().length > 0) {
+          // run an immediate analysis and populate the page
+          setManualLoading(true);
+          analyzeClaim(q)
+            .then((res) => {
+              const normalized: AnalysisResult = {
+                query: q,
+                finalScore: (res as any).verdict_score ?? (res as any).finalScore ?? 0,
+                riskLevel: (res as any).riskLevel ?? "Inconclusive",
+                resultStatus: (res as any).resultStatus ?? "final",
+                confidence: (res as any).confidence ?? 0,
+                summary: (res as any).analysis ?? "",
+                layers: (res as any).layers ?? [],
+                nodes: (res as any).nodes ?? [],
+                links: (res as any).links ?? [],
+                posts: (res as any).posts ?? [],
+              };
+              window.sessionStorage.setItem("verigraph.analysis", JSON.stringify(normalized));
+              setResult(normalized);
+              fetchPropagationMetrics(q);
+            })
+            .catch((err) => {
+              console.error("Analysis fetch error:", err);
+            })
+            .finally(() => {
+              setManualLoading(false);
+              setLoaded(true);
+            });
+          return;
+        }
         setLoaded(true);
         return;
       }
@@ -109,6 +146,52 @@ export default function AnalysisPage() {
           <p className="mt-4 max-w-2xl text-[#b9d8e8]">
             Start from the home page and run a live analysis. Mock results are disabled.
           </p>
+          <div className="mt-6 w-full max-w-xl">
+            <input
+              value={manualQuery}
+              onChange={(e) => setManualQuery(e.target.value)}
+              placeholder="Type a claim to analyze here"
+              className="w-full rounded border px-4 py-3 text-black"
+            />
+            <div className="mt-3 flex gap-3 justify-center">
+              <button
+                onClick={async () => {
+                  if (!manualQuery.trim()) return;
+                  setManualError("");
+                  setManualLoading(true);
+                  try {
+                    const res = await analyzeClaim(manualQuery.trim());
+                    const normalized: AnalysisResult = {
+                      query: manualQuery.trim(),
+                      finalScore: (res as any).verdict_score ?? (res as any).finalScore ?? 0,
+                      riskLevel: (res as any).riskLevel ?? "Inconclusive",
+                      resultStatus: (res as any).resultStatus ?? "final",
+                      confidence: (res as any).confidence ?? 0,
+                      summary: (res as any).analysis ?? "",
+                      layers: (res as any).layers ?? [],
+                      nodes: (res as any).nodes ?? [],
+                      links: (res as any).links ?? [],
+                      posts: (res as any).posts ?? [],
+                    };
+                    window.sessionStorage.setItem("verigraph.analysis", JSON.stringify(normalized));
+                    setResult(normalized);
+                    fetchPropagationMetrics(normalized.query);
+                  } catch (err: any) {
+                    console.error(err);
+                    setManualError(err?.message ?? "Analysis failed");
+                  } finally {
+                    setManualLoading(false);
+                  }
+                }}
+                className="rounded bg-[#73d6ff] px-4 py-2 font-semibold text-black"
+                disabled={manualLoading}
+              >
+                {manualLoading ? "Analyzing..." : "Run Analysis"}
+              </button>
+              <a href="/" className="rounded border px-4 py-2 text-[#def5ff]">Go Home</a>
+            </div>
+            {manualError ? <p className="mt-2 text-sm text-red-400">{manualError}</p> : null}
+          </div>
           <Link
             href="/"
             className="mt-8 rounded-full border border-[#8adfff]/60 bg-[#73d6ff]/20 px-6 py-3 text-sm font-semibold text-[#def5ff] transition hover:bg-[#73d6ff]/35"

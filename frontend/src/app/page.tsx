@@ -26,7 +26,7 @@ export default function Home() {
     try {
       const result = await analyzeClaim(trimmed);
       window.sessionStorage.setItem("verigraph.analysis", JSON.stringify(result));
-      router.push("/analysis");
+      router.push(`/analysis?q=${encodeURIComponent(trimmed)}`);
     } catch (caught) {
       const message = caught instanceof Error ? caught.message : "Unable to analyze claim right now.";
       setError(message);
