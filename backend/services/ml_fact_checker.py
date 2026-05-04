@@ -1,6 +1,6 @@
 """
-ML-based Fact Checker using DistilBERT
-Replaces Gemini API with local ML model for fast, free fact-checking
+ML-based Fact Checker using BART-MNLI
+Replaces external APIs with a local zero-shot model for fast, open-source fact-checking
 """
 
 from typing import Dict
