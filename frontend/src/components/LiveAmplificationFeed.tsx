@@ -205,21 +205,23 @@ export function LiveAmplificationFeed({
                     </div>
 
                     {/* Title */}
-                    {post.url ? (
-                      <a
-                        href={post.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-sm font-medium text-white leading-tight mb-2 line-clamp-2 hover:text-blue-300 hover:underline transition-colors block"
-                      >
-                        {post.title}
-                      </a>
-                    ) : (
-                      <h3 className="text-sm font-medium text-white leading-tight mb-2 line-clamp-2">
-                        {post.title}
-                      </h3>
-                    )}
+                    {(() => {
+                      const targetUrl = post.url && post.url.trim().length > 0
+                        ? post.url
+                        : `https://www.google.com/search?q=${encodeURIComponent(post.source + " " + post.title)}`;
+                      return (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-sm font-medium text-white leading-tight mb-2 line-clamp-2 hover:text-blue-300 hover:underline transition-colors block flex items-center gap-1 group/link"
+                        >
+                          <span>{post.title}</span>
+                          <span className="text-xs text-blue-400 opacity-70 group-hover/link:opacity-100">↗</span>
+                        </a>
+                      );
+                    })()}
 
                     {/* Text Preview */}
                     {post.text && (
