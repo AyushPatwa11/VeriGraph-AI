@@ -36,6 +36,11 @@ class PostItem(BaseModel):
     text: str
     likes: int = Field(ge=0)
     shares: int = Field(ge=0)
+    url: str | None = None
+    urls: list[str] = Field(default_factory=list)
+    source: str | None = None
+    platform: str | None = None
+
 
 
 class AnalyzeResponse(BaseModel):

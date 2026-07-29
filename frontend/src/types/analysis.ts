@@ -32,6 +32,10 @@ export interface PostItem {
   text: string;
   likes: number;
   shares: number;
+  url?: string;
+  urls?: string[];
+  source?: string;
+  platform?: string;
 }
 
 export interface AnalysisResult {
