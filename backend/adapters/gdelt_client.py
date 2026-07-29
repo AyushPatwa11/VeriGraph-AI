@@ -106,6 +106,7 @@ class GDELTClient:
                         "likes": 0,
                         "shares": 0,
                         "followers": 0,
+                        "url": url,
                         "urls": [url],
                     })
                 except Exception:

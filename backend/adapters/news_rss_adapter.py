@@ -1,5 +1,6 @@
 """News aggregator adapter using public RSS feeds from major news outlets"""
 import hashlib
+import urllib.parse
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 import httpx
@@ -137,6 +138,7 @@ class NewsRSSAdapter:
                             "likes": 0,
                             "shares": 0,
                             "followers": 0,
+                            "url": link,
                             "urls": [link],
                             "_timestamp_obj": timestamp_obj,
                         })
@@ -224,7 +226,8 @@ class NewsRSSAdapter:
             return "News"
 
     def _demo_data(self, query: str) -> list[dict]:
-        """Return demo data when real sources fail, for graph visualization."""
+        """Return demo data when real sources fail, with exact query search URLs."""
+        encoded = urllib.parse.quote(query) if 'urllib' in globals() else query.replace(" ", "+")
         demo_posts = [
             {
                 "id": "demo_1",
@@ -235,7 +238,8 @@ class NewsRSSAdapter:
                 "likes": 245,
                 "shares": 89,
                 "followers": 2500000,
-                "urls": ["https://bbc.com/news"],
+                "url": f"https://www.bbc.co.uk/search?q={encoded}",
+                "urls": [f"https://www.bbc.co.uk/search?q={encoded}"],
             },
             {
                 "id": "demo_2",
@@ -246,7 +250,8 @@ class NewsRSSAdapter:
                 "likes": 156,
                 "shares": 62,
                 "followers": 1800000,
-                "urls": ["https://reuters.com"],
+                "url": f"https://www.reuters.com/site-search/?processing=true&query={encoded}",
+                "urls": [f"https://www.reuters.com/site-search/?processing=true&query={encoded}"],
             },
             {
                 "id": "demo_3",
@@ -257,7 +262,8 @@ class NewsRSSAdapter:
                 "likes": 312,
                 "shares": 128,
                 "followers": 2100000,
-                "urls": ["https://apnews.com"],
+                "url": f"https://apnews.com/search?q={encoded}",
+                "urls": [f"https://apnews.com/search?q={encoded}"],
             },
             {
                 "id": "demo_4",
@@ -268,7 +274,8 @@ class NewsRSSAdapter:
                 "likes": 189,
                 "shares": 95,
                 "followers": 3200000,
-                "urls": ["https://cnn.com"],
+                "url": f"https://edition.cnn.com/search?q={encoded}",
+                "urls": [f"https://edition.cnn.com/search?q={encoded}"],
             },
         ]
         return demo_posts

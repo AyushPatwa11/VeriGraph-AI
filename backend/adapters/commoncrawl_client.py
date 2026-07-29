@@ -153,6 +153,7 @@ class CommonCrawlClient:
                                 "likes": 0,
                                 "shares": 0,
                                 "followers": 0,
+                                "url": url_val,
                                 "urls": [url_val],
                                 "_timestamp_obj": timestamp_obj,
                             })
