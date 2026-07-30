@@ -19,18 +19,30 @@ class MLFactChecker:
     """
 
     def __init__(self):
-        """Initialize the zero-shot classification pipeline"""
-        try:
-            self.pipe = pipeline(
-                "zero-shot-classification",
-                model="facebook/bart-large-mnli",
-                device=0 if torch.cuda.is_available() else -1,
-            )
-            self.categories = ["true news", "false news", "misleading"]
-            self.initialized = True
-        except Exception as e:
-            print(f"Warning: ML model initialization failed: {e}")
-            self.initialized = False
+        """Initialize lightweight zero-shot classification pipeline for low-memory environments (Render 512MB RAM)."""
+        self.categories = ["true news", "false news", "misleading"]
+        self.pipe = None
+        self.initialized = False
+
+        models_to_try = [
+            "valhalla/distilbart-mnli-12-3",
+            "typeform/distilbert-base-uncased-mnli",
+            "facebook/bart-large-mnli",
+        ]
+
+        for model_name in models_to_try:
+            try:
+                self.pipe = pipeline(
+                    "zero-shot-classification",
+                    model=model_name,
+                    device=0 if torch.cuda.is_available() else -1,
+                )
+                self.model_name = model_name
+                self.initialized = True
+                print(f"INFO: MLFactChecker model ({model_name}) initialized successfully.")
+                break
+            except Exception as e:
+                print(f"Warning: Model {model_name} failed: {e}")
 
     async def analyze(self, claim: str) -> Dict:
         """

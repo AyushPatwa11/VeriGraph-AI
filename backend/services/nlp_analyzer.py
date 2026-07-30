@@ -21,25 +21,35 @@ class NLPAnalyzer:
     }
 
     def __init__(self) -> None:
-        """Initialize RoBERTa zero-shot model pipeline."""
-        try:
-            # RoBERTa NLI zero-shot classification model
-            self.pipe = pipeline(
-                "zero-shot-classification",
-                model="roberta-large-mnli",
-                device=0 if torch.cuda.is_available() else -1,
-            )
-            self.candidate_labels = [
-                "sensational misinformation",
-                "manipulative propaganda",
-                "objective reporting",
-                "neutral text"
-            ]
-            self.initialized = True
-            print("INFO: RoBERTa model (roberta-large-mnli) initialized successfully.")
-        except Exception as e:
-            print(f"Warning: RoBERTa model initialization failed: {e}. Falling back to linguistic heuristics.")
-            self.initialized = False
+        """Initialize lightweight zero-shot classification pipeline for low-memory cloud hosting (Render 512MB RAM)."""
+        self.candidate_labels = [
+            "sensational misinformation",
+            "manipulative propaganda",
+            "objective reporting",
+            "neutral text"
+        ]
+        self.pipe = None
+        self.initialized = False
+
+        models_to_try = [
+            "cross-encoder/nli-distilroberta-base",
+            "typeform/distilbert-base-uncased-mnli",
+            "valhalla/distilbart-mnli-12-3",
+        ]
+
+        for model_name in models_to_try:
+            try:
+                self.pipe = pipeline(
+                    "zero-shot-classification",
+                    model=model_name,
+                    device=0 if torch.cuda.is_available() else -1,
+                )
+                self.model_name = model_name
+                self.initialized = True
+                print(f"INFO: NLPAnalyzer model ({model_name}) initialized successfully.")
+                break
+            except Exception as e:
+                print(f"Warning: Model {model_name} failed: {e}. Falling back to linguistic heuristics.")
 
     def analyze(self, query: str, posts: list[dict]) -> dict[str, Any]:
         corpus = " ".join([query, *[post.get("text", "") for post in posts]])
