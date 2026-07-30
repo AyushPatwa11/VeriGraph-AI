@@ -103,7 +103,7 @@ class CommonCrawlClient:
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
             }
             
-            timeout = getattr(settings, "commoncrawl_timeout", 30)
+            timeout = 2.0
             
             async with httpx.AsyncClient(timeout=timeout) as client:
                 response = await client.get(url, params=params, headers=headers)

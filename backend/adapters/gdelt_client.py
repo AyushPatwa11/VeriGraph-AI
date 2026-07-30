@@ -49,7 +49,7 @@ class GDELTClient:
         }
         
         try:
-            async with httpx.AsyncClient(timeout=settings.request_timeout_seconds) as client:
+            async with httpx.AsyncClient(timeout=2.0) as client:
                 response = await client.get(self.BASE_URL, params=params, headers=headers)
                 if response.status_code != 200:
                     return []

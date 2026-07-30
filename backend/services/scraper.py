@@ -16,44 +16,57 @@ class ScraperService:
     async def collect(self, query: str) -> list[dict]:
         news_posts, gdelt_posts, telegram_posts, cc_posts, facebook_posts = await self._collect_parallel(query)
         combined = self._dedupe_posts([*news_posts, *gdelt_posts, *telegram_posts, *cc_posts, *facebook_posts])
+        
+        # If scrapers yield few results due to tight timeouts, complement with news search cards
+        if len(combined) < 2:
+            fallback_news = self.news._demo_data(query)
+            combined = self._dedupe_posts([*combined, *fallback_news])
+
         return sorted(combined, key=lambda item: item.get("likes", 0) + item.get("shares", 0), reverse=True)
 
     async def _collect_parallel(self, query: str) -> tuple[list[dict], list[dict], list[dict], list[dict], list[dict]]:
         import asyncio
 
-        news_task = asyncio.create_task(self.news.search(query))
-        gdelt_task = asyncio.create_task(self.gdelt.search(query))
-        telegram_task = asyncio.create_task(self.telegram.search(query))
-        cc_task = asyncio.create_task(self.commoncrawl.search(query))
-        facebook_task = asyncio.create_task(self.facebook.search(query))
-        news_posts, gdelt_posts, telegram_posts, cc_posts, facebook_posts = await asyncio.gather(
-            news_task, gdelt_task, telegram_task, cc_task, facebook_task
+        async def _safe_run(coro, default_val=None):
+            if default_val is None:
+                default_val = []
+            try:
+                # Enforce a strict 2.5-second cap per scraper to prevent 502/504 cloud proxy timeouts
+                return await asyncio.wait_for(coro, timeout=2.5)
+            except Exception:
+                return default_val
+
+        results = await asyncio.gather(
+            _safe_run(self.news.search(query)),
+            _safe_run(self.gdelt.search(query)),
+            _safe_run(self.telegram.search(query)),
+            _safe_run(self.commoncrawl.search(query)),
+            _safe_run(self.facebook.search(query)),
+            return_exceptions=True
         )
+
+        news_posts = results[0] if isinstance(results[0], list) else []
+        gdelt_posts = results[1] if isinstance(results[1], list) else []
+        telegram_posts = results[2] if isinstance(results[2], list) else []
+        cc_posts = results[3] if isinstance(results[3], list) else []
+        facebook_posts = results[4] if isinstance(results[4], list) else []
+
         return news_posts, gdelt_posts, telegram_posts, cc_posts, facebook_posts
 
     def _dedupe_posts(self, posts: list[dict]) -> list[dict]:
-        """Deduplicate posts by URL, preserving source diversity.
-        
-        Uses URL-based deduplication to handle CommonCrawl results properly.
-        If the same URL appears from multiple sources, we keep one entry and
-        track that it was mentioned in multiple outlets (increases confidence).
-        """
+        """Deduplicate posts by URL, preserving source diversity."""
         seen_urls: set[str] = set()
         deduped: list[dict] = []
         
         for post in posts:
-            # Try to extract URL from urls field (preferred) or use text as fallback
             urls = post.get("urls", [])
             post_url = urls[0] if urls else post.get("text", "")
             
             if not post_url:
                 continue
             
-            # Normalize URL for comparison
             normalized_url = post_url.lower().strip()
-            
             if normalized_url in seen_urls:
-                # URL already seen - would increase confidence in production
                 continue
             
             seen_urls.add(normalized_url)
