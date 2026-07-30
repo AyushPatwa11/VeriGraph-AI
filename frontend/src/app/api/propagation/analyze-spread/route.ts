@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60; // 60 seconds duration on Vercel
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -20,7 +23,7 @@ export async function POST(request: NextRequest) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
-          signal: AbortSignal.timeout(15000),
+          cache: "no-store",
         });
 
         if (response.ok) {
@@ -37,14 +40,17 @@ export async function POST(request: NextRequest) {
       } catch (err) {
         lastErrorDetail = err instanceof Error ? err.message : String(err);
         if (attempt < 2) {
-          await new Promise((resolve) => setTimeout(resolve, 1500));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
       }
     }
 
     return NextResponse.json(
-      { error: `Propagation request failed: ${lastErrorDetail || "Backend unreachable"}` },
-      { status: 500 }
+      {
+        error:
+          "The backend server is spinning up from sleep. Please wait 5 seconds and click Analyze again.",
+      },
+      { status: 503 }
     );
   } catch (error) {
     console.error("Propagation analyze-spread API error:", error);

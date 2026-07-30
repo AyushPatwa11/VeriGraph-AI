@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60; // 60 seconds duration on Vercel
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -14,14 +17,14 @@ export async function POST(request: NextRequest) {
 
     let lastErrorDetail = "";
 
-    // Retry up to 2 times to handle Render free-tier container spin-up cold starts
+    // Attempt request to backend
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         const response = await fetch(targetUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
-          signal: AbortSignal.timeout(15000), // 15s per attempt
+          cache: "no-store",
         });
 
         if (response.ok) {
@@ -37,16 +40,18 @@ export async function POST(request: NextRequest) {
         }
       } catch (err) {
         lastErrorDetail = err instanceof Error ? err.message : String(err);
-        // Short delay before retry on connection failure / spin-up
         if (attempt < 2) {
-          await new Promise((resolve) => setTimeout(resolve, 1500));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
       }
     }
 
     return NextResponse.json(
-      { error: `Analysis request failed: ${lastErrorDetail || "Backend unreachable"}` },
-      { status: 500 }
+      {
+        error:
+          "The backend server is spinning up from sleep. Please wait 5 seconds and click Analyze again.",
+      },
+      { status: 503 }
     );
   } catch (error) {
     console.error("Analyze API proxy error:", error);
