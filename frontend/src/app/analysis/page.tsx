@@ -13,7 +13,7 @@ import { PropagationSpread } from "@/components/PropagationSpread";
 import { LiveAmplificationFeed } from "@/components/LiveAmplificationFeed";
 import { Footer } from "@/components/Footer";
 import type { AnalysisResult } from "@/types/analysis";
-import { analyzeClaim } from "@/lib/api";
+import { analyzeClaim } from "../../lib/api";
 
 interface AmplificationPost {
   id: string;

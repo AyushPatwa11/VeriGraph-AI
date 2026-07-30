@@ -7,7 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { Footer } from "@/components/Footer";
-import { analyzeClaim } from "@/lib/api";
+import { analyzeClaim } from "../lib/api";
 
 export default function Home() {
   const router = useRouter();

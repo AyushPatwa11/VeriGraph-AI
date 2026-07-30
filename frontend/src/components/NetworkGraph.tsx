@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { motion } from "framer-motion";
 import type { GraphLink, GraphNode } from "@/types/analysis";
-import { DEFAULT_GRAPH_NODES, DEFAULT_GRAPH_LINKS } from "@/lib/graph-fallback";
+import { DEFAULT_GRAPH_NODES, DEFAULT_GRAPH_LINKS } from "../lib/graph-fallback";
 
 interface NetworkGraphProps {
   nodes: GraphNode[];
