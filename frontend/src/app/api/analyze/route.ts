@@ -9,28 +9,19 @@ export async function POST(request: NextRequest) {
       process.env.NEXT_PUBLIC_BACKEND_URL ||
       "https://verigraph-ai.onrender.com";
 
-    const candidateHosts = [
-      primaryUrl,
-      "http://backend:8000",
-      "http://127.0.0.1:8000",
-      "http://localhost:8000",
-    ];
+    const cleanHost = primaryUrl.replace(/\/$/, "");
+    const targetUrl = `${cleanHost}/api/analyze`;
 
-    // Remove duplicates while preserving order
-    const uniqueHosts = Array.from(new Set(candidateHosts.map((h) => h.replace(/\/$/, ""))));
-
-    let response: Response | null = null;
     let lastErrorDetail = "";
 
-    for (const host of uniqueHosts) {
+    // Retry up to 2 times to handle Render free-tier container spin-up cold starts
+    for (let attempt = 1; attempt <= 2; attempt++) {
       try {
-        const targetUrl = `${host}/api/analyze`;
-        
-        response = await fetch(targetUrl, {
+        const response = await fetch(targetUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
-          signal: AbortSignal.timeout(25000), // 25s timeout for cloud inference
+          signal: AbortSignal.timeout(15000), // 15s per attempt
         });
 
         if (response.ok) {
@@ -39,14 +30,17 @@ export async function POST(request: NextRequest) {
         }
 
         const errorText = await response.text().catch(() => "");
-        lastErrorDetail = `Backend error (${response.status}): ${errorText || response.statusText}`;
+        lastErrorDetail = `Backend HTTP ${response.status}: ${errorText || response.statusText}`;
 
-        // If backend returned a valid HTTP error code (e.g. 400 Bad Request), don't try local fallback
         if (response.status < 500) {
           return NextResponse.json({ error: lastErrorDetail }, { status: response.status });
         }
       } catch (err) {
         lastErrorDetail = err instanceof Error ? err.message : String(err);
+        // Short delay before retry on connection failure / spin-up
+        if (attempt < 2) {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+        }
       }
     }
 

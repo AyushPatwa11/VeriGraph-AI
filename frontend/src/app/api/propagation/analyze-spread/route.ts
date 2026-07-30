@@ -9,27 +9,18 @@ export async function POST(request: NextRequest) {
       process.env.NEXT_PUBLIC_BACKEND_URL ||
       "https://verigraph-ai.onrender.com";
 
-    const candidateHosts = [
-      primaryUrl,
-      "http://backend:8000",
-      "http://127.0.0.1:8000",
-      "http://localhost:8000",
-    ];
+    const cleanHost = primaryUrl.replace(/\/$/, "");
+    const targetUrl = `${cleanHost}/api/propagation/analyze-spread`;
 
-    const uniqueHosts = Array.from(new Set(candidateHosts.map((h) => h.replace(/\/$/, ""))));
-
-    let response: Response | null = null;
     let lastErrorDetail = "";
 
-    for (const host of uniqueHosts) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
       try {
-        const targetUrl = `${host}/api/propagation/analyze-spread`;
-
-        response = await fetch(targetUrl, {
+        const response = await fetch(targetUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
-          signal: AbortSignal.timeout(25000), // 25s timeout for cloud propagation analysis
+          signal: AbortSignal.timeout(15000),
         });
 
         if (response.ok) {
@@ -38,13 +29,16 @@ export async function POST(request: NextRequest) {
         }
 
         const errorText = await response.text().catch(() => "");
-        lastErrorDetail = `Backend error (${response.status}): ${errorText || response.statusText}`;
+        lastErrorDetail = `Backend HTTP ${response.status}: ${errorText || response.statusText}`;
 
         if (response.status < 500) {
           return NextResponse.json({ error: lastErrorDetail }, { status: response.status });
         }
       } catch (err) {
         lastErrorDetail = err instanceof Error ? err.message : String(err);
+        if (attempt < 2) {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+        }
       }
     }
 
