@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     const candidateHostnames = [
       process.env.BACKEND_URL,
       process.env.NEXT_PUBLIC_BACKEND_URL,
+      "https://verigraph-ai.onrender.com",
       "http://backend:8000",
       "http://127.0.0.1:8000",
       "http://localhost:8000",
