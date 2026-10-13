@@ -10,7 +10,9 @@ export async function POST(request: NextRequest) {
     const primaryUrl =
       process.env.BACKEND_URL ||
       process.env.NEXT_PUBLIC_BACKEND_URL ||
-      "https://verigraph-ai.onrender.com";
+      (process.env.NODE_ENV === "development"
+        ? "http://localhost:8000"
+        : "https://verigraph-ai.onrender.com");
 
     const cleanHost = primaryUrl.replace(/\/$/, "");
     const targetUrl = `${cleanHost}/api/propagation/analyze-spread`;
