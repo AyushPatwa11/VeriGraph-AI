@@ -9,7 +9,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2%20(Turbopack)-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![BART+RoBERTa](https://img.shields.io/badge/AI%20Core-BART%20%2B%20RoBERTa-FF6F00?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co)
-
+ 
 <p align="center">
   <a href="#-quick-start"><b>🚀 Quick Start</b></a> •
   <a href="#-system-architecture"><b>🏛️ Architecture</b></a> •
