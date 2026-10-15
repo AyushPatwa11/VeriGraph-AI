@@ -1,290 +1,393 @@
-<div align="center">
+# VeriGraph AI
 
-# 🌐 VERIGRAPH AI
-### *Next-Generation Real-Time Propaganda Detection & Misinformation Intelligence Platform*
+## 1. Project Overview
 
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-00F0FF?style=for-the-badge&logo=rocket&logoColor=black)](https://github.com/AyushPatwa11/VeriGraph-AI)
-[![Version](https://img.shields.io/badge/Version-1.0.0-7000FF?style=for-the-badge&logo=semver&logoColor=white)](https://github.com/AyushPatwa11/VeriGraph-AI)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Next.js-16.2%20(Turbopack)-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org)
-[![BART+RoBERTa](https://img.shields.io/badge/AI%20Core-BART%20%2B%20RoBERTa-FF6F00?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co)
- 
-<p align="center">
-  <a href="#-quick-start"><b>🚀 Quick Start</b></a> •
-  <a href="#-system-architecture"><b>🏛️ Architecture</b></a> •
-  <a href="#-dual-transformer-ai-core"><b>🧠 Neural AI Engine</b></a> •
-  <a href="#-api-documentation"><b>📡 API Reference</b></a> •
-  <a href="#-key-features"><b>✨ Features</b></a>
-</p>
+- **Project Title:** VeriGraph AI – Real-Time Propaganda Detection & Misinformation Intelligence Platform
+- **Team Members:**  
+  - Name – Roll Number  
+  - Name – Roll Number  
+  - Name – Roll Number  
+  *(Add all team members and their roll numbers here.)*
+- **Technology Stack:** Next.js, React, TypeScript, Python, FastAPI, PyTorch, HuggingFace Transformers, Scikit-Learn, D3.js, Docker
+- **Project Guide/Mentor:**  
+  *(Add guide/mentor name here.)*
+- **Project Objective:**  
+  VeriGraph AI is an open-source misinformation surveillance and claim verification platform designed to analyze online claims, identify potentially misleading or manipulative information, and visualize how information spreads across different digital sources. The system combines NLP-based transformer models, graph-based analysis, and multi-source data collection to generate an overall risk assessment for a given claim.
 
 ---
 
-</div>
+## 2. Problem Statement
 
-## 🌌 Overview
+The rapid spread of misinformation and propaganda across digital platforms makes it difficult for users to determine whether an online claim is reliable, misleading, or potentially manipulated.
 
-**VeriGraph AI** is a state-of-the-art, open-source misinformation surveillance and claim verification engine. Powered by a **Dual Transformer Neural Pipeline (BART-MNLI + RoBERTa-Large)**, real-time Graph Neural Network (GNN) topological analysis, and deep web multi-source scrapers, VeriGraph tracks how claims emerge, amplify, and spread across global digital ecosystems in real time.
+Traditional fact-checking methods can be time-consuming and may not provide information about how a claim is spreading across different sources.
 
+**VeriGraph AI** addresses this problem by providing an automated system that:
+
+- Analyzes the language and framing of a claim.
+- Performs AI-based fact verification.
+- Examines relationships and patterns between information sources.
+- Collects information from multiple online data sources.
+- Generates a combined risk score.
+- Provides visual representations of information propagation.
+
+---
+
+## 3. Features
+
+- **AI-Based Claim Analysis**  
+  Analyzes user-provided claims using transformer-based NLP models.
+
+- **Fact Verification**  
+  Uses BART-Large-MNLI to perform zero-shot natural language inference and classify claims.
+
+- **Framing & Manipulation Detection**  
+  Uses RoBERTa-Large-MNLI to analyze sensationalism, urgency, propaganda language, and potential bias.
+
+- **Multi-Source Data Aggregation**  
+  Collects information from News RSS feeds, GDELT, Telegram, CommonCrawl, and public feeds.
+
+- **Graph-Based Propagation Analysis**  
+  Represents relationships between sources and analyzes semantic and temporal connections.
+
+- **Virality Metrics**  
+  Calculates metrics such as estimated reach, virality score, platform distribution, and doubling rate.
+
+- **Interactive Network Visualization**  
+  Uses D3.js to display relationships and propagation patterns through an interactive graph.
+
+- **Risk Score Generation**  
+  Combines different analysis layers into a final risk score between 0 and 100.
+
+- **Direct Source Attribution**  
+  Provides links to relevant source articles and verification results.
+
+- **Modern Web Interface**  
+  Provides a responsive futuristic interface using Next.js, TailwindCSS, glassmorphism, and Framer Motion.
+
+---
+
+## 4. Technology Stack
+
+| Category | Technologies |
+|---|---|
+| **Frontend** | Next.js 16, React 19, TypeScript |
+| **UI & Styling** | TailwindCSS v4, Vanilla CSS, Glassmorphism, Framer Motion |
+| **Graph Visualization** | D3.js, SVG |
+| **Backend** | Python 3.10+, FastAPI, Uvicorn |
+| **Machine Learning** | PyTorch, HuggingFace Transformers, Scikit-Learn |
+| **AI Models** | BART-Large-MNLI, RoBERTa-Large-MNLI |
+| **Data Collection** | HTTPX, Feedparser, XML ElementTree |
+| **External Data Sources** | GDELT 2.0, CommonCrawl, News RSS, Telegram, Public Feeds |
+| **Containerization** | Docker, Docker Compose |
+
+The project uses a dual-transformer AI pipeline consisting of BART-MNLI for fact verification and RoBERTa-Large-MNLI for framing and manipulation analysis.
+
+---
+
+## 5. Project Structure
+
+```text
+VeriGraph-AI/
+├── README.md
+│
+├── backend/
+│   ├── main.py
+│   │
+│   ├── api/
+│   │   └── routes.py
+│   │
+│   ├── services/
+│   │   ├── nlp_analyzer.py
+│   │   ├── ml_fact_checker.py
+│   │   ├── gnn_analyzer.py
+│   │   ├── fusion_engine.py
+│   │   ├── graph_builder.py
+│   │   └── scraper.py
+│   │
+│   ├── adapters/
+│   │   ├── news_rss_adapter.py
+│   │   ├── gdelt_client.py
+│   │   ├── commoncrawl_client.py
+│   │   ├── telegram_client.py
+│   │   └── facebook_client.py
+│   │
+│   └── schemas/
+│       └── contracts.py
+│
+└── frontend/
+    ├── src/
+    │   ├── app/
+    │   │   ├── page.tsx
+    │   │   ├── layout.tsx
+    │   │   ├── analysis/
+    │   │   │   └── page.tsx
+    │   │   └── api/
+    │   │       ├── analyze/
+    │   │       └── propagation/
+    │   │
+    │   ├── components/
+    │   │   ├── LiveAmplificationFeed.tsx
+    │   │   ├── PostsList.tsx
+    │   │   ├── NetworkGraph.tsx
+    │   │   ├── ScoreDisplay.tsx
+    │   │   └── LayerBreakdown.tsx
+    │   │
+    │   ├── lib/
+    │   │   ├── api.ts
+    │   │   └── graph-fallback.ts
+    │   │
+    │   └── types/
+    │       └── analysis.ts
+    │
+    └── package.json
 ```
-                  ┌────────────────────────────────────────────────────────┐
-                  │                 VERIGRAPH AI ENGINE                     │
-                  └────────────────────────────────────────────────────────┘
-                                               │
-           ┌───────────────────────────────────┼───────────────────────────────────┐
-           ▼                                   ▼                                   ▼
-┌──────────────────────┐            ┌──────────────────────┐            ┌──────────────────────┐
-│  LIVE DATA PIPELINE  │            │ DUAL TRANSFORMER NLI │            │ GRAPH DENSITY & GNN  │
-│  ├─ News RSS (AP/BBC)│            │  ├─ BART-Large-MNLI  │            │  ├─ Semantic Links   │
-│  ├─ GDELT 200B+      │  ───────►  │  │   (Fact-Checker) │  ───────►  │  ├─ URL Propagation  │
-│  ├─ Telegram Streams │            │  └─ RoBERTa-Large    │            │  ├─ Temporal Window  │
-│  ├─ CommonCrawl Web  │            │      (Framing / NLP) │            │  └─ Virality Matrix  │
-│  └─ Public FB Feeds  │            └──────────────────────┘            └──────────────────────┘
-└──────────────────────┘                                                           │
-                                                                                   ▼
-                                                                        ┌──────────────────────┐
-                                                                        │ FUSION VERDICT PANEL │
-                                                                        │ Risk: 0-100% Score   │
-                                                                        │ Interactive Graph    │
-                                                                        │ Direct Source Links  │
-                                                                        └──────────────────────┘
-```
+
+The repository separates the FastAPI backend, AI services, data adapters, schemas, and Next.js frontend into dedicated modules.
 
 ---
 
-## ✨ Key Capabilities & Highlights
+## 6. Installation and Execution
 
-- 🧠 **Dual-Transformer Neural Core**: Combines zero-shot `BART-Large-MNLI` for factual credibility scoring and `RoBERTa-Large-MNLI` for sensationalism and manipulation detection.
-- 📡 **Multi-Stream Data Aggregation**: Parallel real-time ingestion from **5 global data channels** (News RSS, GDELT 200B+ Event Database, Telegram, CommonCrawl, and Public Feeds).
-- 🔗 **Deep Direct Source Attribution**: Every output card and news item includes direct links straight to the **exact specific article page** or automated deep-search verification.
-- 🕸️ **Interactive Graph Neural Network**: D3.js powered dynamic node-link visualizer showing coordination clusters, semantic similarity, and temporal alignment between spreaders.
-- 📈 **Real-Time Virality Metrics**: Instant calculation of total reach, viral coefficient, doubling time, and platform distribution.
-- 🎨 **Futuristic UI/UX**: Designed with Next.js 16 (Turbopack), TailwindCSS, Glassmorphic components, dark mode aesthetic, and micro-animations via Framer Motion.
+### Option 1: Using Docker
 
----
-
-## 🧠 Dual Transformer AI Core
-
-VeriGraph AI operates local, high-speed neural models via PyTorch & HuggingFace Transformers—requiring **zero external API keys** or proprietary third-party dependencies:
-
-| Neural Model | Architecture | Role & Target Output | Performance |
-| :--- | :--- | :--- | :--- |
-| **BART-MNLI** | `facebook/bart-large-mnli` | **Fact Verification Engine**: Zero-shot natural language inference classifying claims into *True News*, *False News*, or *Misleading*. | ~45ms Inference (91% Accuracy) |
-| **RoBERTa-Large** | `roberta-large-mnli` | **Framing & Manipulation Analyzer**: Evaluates text for sensationalism, urgency framing, propaganda language pressure, and tone bias. | ~50ms Inference |
-| **GNN Topology** | Custom Feature Matrix | **Network Virality Engine**: Computes clustering coefficients, cross-platform propagation density, and accounts coordination score. | Instant Computation |
-
----
-
-### ⚡ Option A: Quick Start with Docker (Recommended)
-
-Run the entire stack (FastAPI Backend + Next.js Frontend + Persistent Database Volume) in one command:
+Clone the repository:
 
 ```bash
-# Build and start all containers in detached mode
+git clone https://github.com/AyushPatwa11/VeriGraph-AI.git
+cd VeriGraph-AI
+```
+
+Build and start the complete application:
+
+```bash
 docker compose up --build -d
+```
 
-# Check running container status
+Check the running containers:
+
+```bash
 docker compose ps
+```
 
-# View live logs
+View application logs:
+
+```bash
 docker compose logs -f
 ```
 
-> 🔹 **Frontend Application**: `http://localhost:3000`  
-> 🔹 **Backend API & Swagger Docs**: `http://localhost:8000/docs`  
-> 🔹 **Data Persistence**: Analysis records are automatically saved to `./backend/data/analyses.json` via mounted Docker volume.
+The application can then be accessed through:
 
-To stop the services:
+- **Frontend:** `http://localhost:3000`
+- **Backend API:** `http://localhost:8000`
+- **Swagger API Documentation:** `http://localhost:8000/docs`
+
+To stop the application:
+
 ```bash
 docker compose down
 ```
 
----
+These Docker execution steps and local service addresses are specified in the project documentation.
 
-### ⚡ Option B: Manual Local Setup
+### Option 2: Manual Setup
 
-#### Step 1: Start Backend API Server
+#### Backend
+
+Navigate to the backend:
 
 ```bash
-# Navigate to backend directory
 cd backend
+```
 
-# Install dependencies (PyTorch, Transformers, FastAPI, Uvicorn, Scikit-Learn)
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
-# Launch FastAPI server with hot reload
+Start the FastAPI server:
+
+```bash
 python -m uvicorn main:app --reload --port 8000
 ```
-> 🔹 **Backend API URL**: `http://localhost:8000`  
-> 🔹 **Interactive Swagger Docs**: `http://localhost:8000/docs`
 
----
+#### Frontend
 
-### Step 2: Start Frontend Application
+Open another terminal:
 
 ```bash
-# In a new terminal tab, navigate to frontend directory
 cd frontend
+```
 
-# Install Node dependencies
+Install Node.js dependencies:
+
+```bash
 npm install
+```
 
-# Start Next.js Turbopack dev server
+Start the development server:
+
+```bash
 npm run dev
 ```
-> 🔹 **Web Application URL**: `http://localhost:3000`  
-> 🔹 **Propagation Demo Dashboard**: `http://localhost:3000/propagation-demo`
 
----
+The frontend runs on:
 
-## 📡 API Reference
-
-VeriGraph backend exposes high-performance RESTful JSON endpoints:
-
-### 1. Execute Comprehensive Claim Analysis
-- **Endpoint**: `POST /api/analyze`
-- **Headers**: `Content-Type: application/json`
-- **Request Body**:
-  ```json
-  {
-    "query": "Tom Holland Spider-Man needs to evolve or quit"
-  }
-  ```
-- **Sample Response**:
-  ```json
-  {
-    "query": "Tom Holland Spider-Man needs to evolve or quit",
-    "finalScore": 25,
-    "riskLevel": "Low",
-    "resultStatus": "final",
-    "confidence": 0.72,
-    "summary": "Low risk assessment driven primarily by network coordination patterns. Signals: NLP=20, GNN=30, ML-FactCheck=15...",
-    "layers": [
-      {
-        "name": "NLP",
-        "score": 20,
-        "explanation": "RoBERTa model evaluated language as mostly objective ('objective reporting', confidence: 0.84).",
-        "status": "available",
-        "confidence": 0.84
-      },
-      {
-        "name": "GNN",
-        "score": 30,
-        "explanation": "Network topological density indicates low artificial coordination.",
-        "status": "available",
-        "confidence": 0.75
-      },
-      {
-        "name": "ML-FactCheck",
-        "score": 15,
-        "explanation": "Claim exhibits characteristics typical of factual, verifiable entertainment reporting.",
-        "status": "available",
-        "confidence": 0.89
-      }
-    ],
-    "nodes": [
-      { "id": "a1", "label": "bbc.co.uk", "followers": 2500000, "cluster": 1 }
-    ],
-    "links": [
-      { "source": "a1", "target": "a2", "kind": "semantic" }
-    ],
-    "posts": [
-      {
-        "id": "news_123",
-        "username": "bbc.co.uk",
-        "timestamp": "2h ago",
-        "text": "Tom Holland discusses the future of Spider-Man in upcoming Marvel projects...",
-        "likes": 245,
-        "shares": 89,
-        "url": "https://www.bbc.co.uk/search?q=Tom+Holland"
-      }
-    ]
-  }
-  ```
-
----
-
-### 2. Propagation & Virality Metrics
-- **Endpoint**: `POST /api/propagation/analyze-spread`
-- **Request Body**: `{ "query": "string" }`
-- **Response**: Comprehensive total reach, virality score (0-100), platform breakdowns, and doubling rate.
-
----
-
-### 3. Service Health Check
-- **Endpoint**: `GET /health`
-- **Response**: `{ "status": "ok", "service": "verigraph-backend" }`
-
----
-
-## 🏛️ Repository Architecture
-
-```
-VeriGraph-AI/
-├── 📄 README.md                          # Master Futuristic Documentation
-├── 📁 backend/                           # FastAPI Python Server
-│   ├── 📄 main.py                        # Server Entry Point & CORS Setup
-│   ├── 📁 api/
-│   │   └── 📄 routes.py                  # API Route Definitions
-│   ├── 📁 services/                      # Core Neural Logic
-│   │   ├── 📄 nlp_analyzer.py            # RoBERTa-Large MNLI Framing Classifier
-│   │   ├── 📄 ml_fact_checker.py         # BART-Large MNLI Fact Verification Engine
-│   │   ├── 📄 gnn_analyzer.py            # Graph Neural Network Virality Engine
-│   │   ├── 📄 fusion_engine.py           # Multi-Layer Evidence Fusion Matrix
-│   │   ├── 📄 graph_builder.py           # Semantic, Temporal & URL Link Builder
-│   │   └── 📄 scraper.py                # Multi-Channel Data Aggregator
-│   ├── 📁 adapters/                      # Real-Time Data Scrapers
-│   │   ├── 📄 news_rss_adapter.py        # AP, BBC, CNN, Reuters RSS Feeds
-│   │   ├── 📄 gdelt_client.py            # GDELT 2.0 Global Event Ingestion
-│   │   ├── 📄 commoncrawl_client.py      # CommonCrawl CDX Web Index Search
-│   │   ├── 📄 telegram_client.py        # Telegram Channel Client
-│   │   └── 📄 facebook_client.py        # Facebook Graph Ingestor
-│   └── 📁 schemas/
-│       └── 📄 contracts.py              # Pydantic Data Contracts & Validation
-└── 📁 frontend/                          # Next.js 16 Client App
-    ├── 📁 src/
-    │   ├── 📁 app/                       # App Router Pages
-    │   │   ├── 📄 page.tsx               # Home Page & Claim Analyzer Input
-    │   │   ├── 📄 layout.tsx             # Root Application Layout & Fonts
-    │   │   ├── 📁 analysis/
-    │   │   │   └── 📄 page.tsx           # Full Claims Analysis & Graph Dashboard
-    │   │   └── 📁 api/                   # Server-Side API Proxies
-    │   │       ├── 📁 analyze/
-    │   │       └── 📁 propagation/
-    │   ├── 📁 components/                # Glassmorphic UI Components
-    │   │   ├── 📄 LiveAmplificationFeed.tsx # Real-Time Source Feed with Deep Links
-    │   │   ├── 📄 PostsList.tsx          # Direct Clickable Articles List
-    │   │   ├── 📄 NetworkGraph.tsx       # Interactive D3 Force-Directed Network
-    │   │   ├── 📄 ScoreDisplay.tsx       # Cyberpunk Risk Score Dial
-    │   │   └── 📄 LayerBreakdown.tsx     # Individual Model Diagnostics
-    │   ├── 📁 lib/                       # Utility & API Wrappers
-    │   │   ├── 📄 api.ts                 # Axios/Fetch API Client
-    │   │   └── 📄 graph-fallback.ts      # Visual Graph Data Schemas
-    │   └── 📁 types/
-    │       └── 📄 analysis.ts            # TypeScript Interfaces & Contracts
-    └── 📄 package.json                   # Next.js & Frontend Tooling Dependencies
+```text
+http://localhost:3000
 ```
 
----
+The propagation demonstration is available at:
 
-## 🛠️ Technology Stack
+```text
+http://localhost:3000/propagation-demo
+```
 
-| Layer | Technologies & Tools |
-| :--- | :--- |
-| **Frontend Framework** | Next.js 16 (App Router, Turbopack), React 19, TypeScript |
-| **UI & Styling** | Vanilla CSS Design Tokens, TailwindCSS v4, Glassmorphism, Framer Motion |
-| **Graph Visualization** | D3.js (Force-Directed Graph Simulation), SVG Rendering |
-| **Backend Framework** | Python 3.10+, FastAPI, Uvicorn |
-| **Machine Learning** | PyTorch, HuggingFace Transformers (`bart-large-mnli`, `roberta-large-mnli`), Scikit-Learn |
-| **Data Scraping & APIs** | HTTPX, Feedparser, GDELT 2.0 API, CommonCrawl CDX Index, XML ElementTree |
+
 
 ---
 
-## 🛡️ License & Attributions
+## 7. Screenshots / Output
 
-Distributed under the **MIT License**. See `LICENSE` for details.  
-*Developed with precision by the VeriGraph AI Team.*
+Add screenshots of the following sections of the application:
 
-<div align="center">
-  <sub>Built with ❤️ for a safer, more transparent digital news landscape.</sub>
-</div>
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+### Claim Analysis Dashboard
+
+![Analysis Dashboard](screenshots/analysis.png)
+
+### Risk Score
+
+![Risk Score](screenshots/risk-score.png)
+
+### Network Graph
+
+![Network Graph](screenshots/network-graph.png)
+
+### Propagation Analysis
+
+![Propagation Analysis](screenshots/propagation.png)
+
+> Replace the image paths above with the actual screenshots from the project.
+
+---
+
+## 8. DSA Concepts Used
+
+The project uses several data structures and algorithmic concepts as part of its analysis and visualization pipeline.
+
+### 1. Graphs
+
+Graphs are a major component of VeriGraph AI.
+
+The system represents relationships between sources using nodes and links. These relationships can represent semantic similarity, URL connections, source propagation, and temporal relationships.
+
+The frontend uses D3.js to create an interactive force-directed graph.
+
+### 2. Graph Analysis
+
+The backend's graph analysis includes concepts such as:
+
+- Graph density
+- Clustering coefficients
+- Network topology
+- Source coordination
+- Propagation relationships
+
+The GNN analysis layer uses these network characteristics to contribute to the final risk assessment.
+
+### 3. Hashing / Key-Based Data Mapping
+
+Hash-based mappings can be used for efficiently associating sources, claims, posts, and graph nodes with their corresponding identifiers.
+
+### 4. Arrays and Lists
+
+Arrays/lists are used to store:
+
+- News articles
+- Social posts
+- Graph nodes
+- Graph links
+- Analysis layers
+- Platform data
+- Model outputs
+
+### 5. Searching
+
+Searching is involved in retrieving and matching relevant information from external data sources and web indexes.
+
+### 6. Sorting and Ranking
+
+Collected information and analysis results can be ranked based on relevance, confidence, risk score, or propagation-related metrics.
+
+### 7. Time and Space Complexity
+
+The project involves processing multiple sources, text inputs, and graph relationships. Efficient data structures and algorithms are therefore important for handling increasing amounts of information.
+
+> **Note:** The project documentation explicitly identifies graph/GNN analysis, clustering coefficients, graph density, semantic links, URL propagation, temporal windows, and virality analysis. Other DSA topics should only be claimed in the final academic report if they are actually present in the implementation.
+
+---
+
+## 9. Learning Outcomes
+
+Through the development of VeriGraph AI, the team gained practical experience in:
+
+- Developing a full-stack web application.
+- Building REST APIs using FastAPI.
+- Developing modern web interfaces using Next.js and React.
+- Working with TypeScript.
+- Integrating machine learning models using PyTorch and HuggingFace Transformers.
+- Understanding Natural Language Inference and transformer-based NLP.
+- Applying graph-based analysis to real-world information networks.
+- Creating interactive data visualizations using D3.js.
+- Working with real-time and external data sources.
+- Designing modular backend architectures.
+- Using Docker and Docker Compose for application deployment.
+- Connecting frontend applications with backend APIs.
+
+---
+
+## 10. Future Scope
+
+The project can be further improved by adding:
+
+- Support for additional social media platforms.
+- More advanced fact-checking models.
+- Improved multilingual misinformation detection.
+- More sophisticated Graph Neural Network models.
+- Real-time streaming and continuous monitoring.
+- User authentication and personalized dashboards.
+- Historical misinformation trend analysis.
+- Improved source credibility scoring.
+- Automated alerts for rapidly spreading suspicious claims.
+- Browser extensions for detecting potentially misleading content while browsing.
+- Larger datasets for improving model accuracy.
+- More advanced visualization and network-analysis techniques.
+
+---
+
+## 11. References
+
+- **HuggingFace Transformers** – Used for integrating BART-MNLI and RoBERTa-Large-MNLI models.
+- **PyTorch** – Machine learning framework used for neural model execution.
+- **FastAPI Documentation** – Backend REST API development.
+- **Next.js Documentation** – Frontend application development.
+- **React Documentation** – UI development.
+- **D3.js Documentation** – Interactive graph visualization.
+- **GDELT 2.0** – Global event and news data.
+- **CommonCrawl** – Web-scale web indexing and data.
+- **News RSS Feeds** – News data aggregation.
+- **Docker Documentation** – Containerization and deployment.
+- **Scikit-Learn Documentation** – Machine learning utilities.
+
+---
+
+## 12. License
+
+This project is distributed under the **MIT License**.
+
+See the `LICENSE` file in the repository for complete license information.
