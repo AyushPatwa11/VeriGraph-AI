@@ -1,15 +1,81 @@
 from fastapi import APIRouter, Header, HTTPException
+from fastapi.responses import FileResponse, JSONResponse
 from datetime import datetime
+import os
 import sys
 
 from schemas.contracts import AnalyzeRequest, AnalyzeResponse
 from services.orchestrator import Orchestrator
 from services.scraper import ScraperService
 from services.propagation_metrics import PropagationMetrics
+from services.json_db import db as json_db
 
 router = APIRouter(prefix="/api", tags=["analysis"])
 orchestrator = Orchestrator()
 scraper = ScraperService()
+
+# ──────────────────────────────────────────────────────────────
+# HISTORY / DATABASE ENDPOINTS
+# ──────────────────────────────────────────────────────────────
+
+@router.get("/history")
+async def get_history(limit: int = 50, offset: int = 0) -> dict:
+    """Return all saved analysis records (newest first)."""
+    records = json_db.all()
+    total = len(records)
+    paginated = records[offset : offset + limit]
+    return {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "records": paginated,
+    }
+
+
+@router.get("/history/{record_id}")
+async def get_history_record(record_id: int) -> dict:
+    """Return a single saved analysis by its integer ID."""
+    record = json_db.get(record_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail=f"Record {record_id} not found.")
+    return record
+
+
+@router.delete("/history/{record_id}")
+async def delete_history_record(record_id: int) -> dict:
+    """Delete a saved analysis record by ID."""
+    deleted = json_db.delete(record_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail=f"Record {record_id} not found.")
+    return {"deleted": True, "id": record_id}
+
+
+@router.delete("/history")
+async def clear_history() -> dict:
+    """Wipe all saved analysis records."""
+    json_db.clear()
+    return {"cleared": True}
+
+
+@router.get("/history/export/download")
+async def download_history() -> FileResponse:
+    """Download the full analyses.json file."""
+    data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+    db_path = os.path.abspath(os.path.join(data_dir, "analyses.json"))
+    if not os.path.exists(db_path):
+        raise HTTPException(status_code=404, detail="No data file found yet.")
+    return FileResponse(
+        path=db_path,
+        media_type="application/json",
+        filename="verigraph_analyses.json",
+    )
+
+
+@router.get("/db-stats")
+async def db_stats() -> dict:
+    """Return quick stats about the database file."""
+    return json_db.stats()
+
 
 
 @router.post("/analyze", response_model=AnalyzeResponse)

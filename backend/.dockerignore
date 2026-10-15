@@ -1,0 +1,32 @@
+# backend/.dockerignore
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Environment files (injected by docker-compose)
+.env
+*.env
+
+# Test / dev files
+tests/
+pytest.ini
+*.md
+
+# Data volume — managed by Docker, not baked into image
+data/
+
+# Git
+.git/
+.gitignore
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -75,16 +75,35 @@ VeriGraph AI operates local, high-speed neural models via PyTorch & HuggingFace 
 
 ---
 
-## ⚡ Quick Start
+### ⚡ Option A: Quick Start with Docker (Recommended)
 
-### Prerequisites
-- **Python**: `3.10+`
-- **Node.js**: `18.0+`
-- **npm** or **pnpm**
+Run the entire stack (FastAPI Backend + Next.js Frontend + Persistent Database Volume) in one command:
+
+```bash
+# Build and start all containers in detached mode
+docker compose up --build -d
+
+# Check running container status
+docker compose ps
+
+# View live logs
+docker compose logs -f
+```
+
+> 🔹 **Frontend Application**: `http://localhost:3000`  
+> 🔹 **Backend API & Swagger Docs**: `http://localhost:8000/docs`  
+> 🔹 **Data Persistence**: Analysis records are automatically saved to `./backend/data/analyses.json` via mounted Docker volume.
+
+To stop the services:
+```bash
+docker compose down
+```
 
 ---
 
-### Step 1: Start Backend API Server
+### ⚡ Option B: Manual Local Setup
+
+#### Step 1: Start Backend API Server
 
 ```bash
 # Navigate to backend directory

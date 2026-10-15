@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="relative border-t border-white/15 bg-gradient-to-b from-[#031019] to-[#0a1a26] px-6 py-16">
@@ -20,9 +22,12 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Product</h4>
             <ul className="space-y-2 text-sm text-[#b8d4e1]">
-              <li><a href="#features" className="hover:text-[#9be2ff] transition-colors">Features</a></li>
-              <li><a href="/analysis" className="hover:text-[#9be2ff] transition-colors">Dashboard</a></li>
-              <li><a href="#" className="hover:text-[#9be2ff] transition-colors">Documentation</a></li>
+              <li><Link href="/" className="hover:text-[#9be2ff] transition-colors">Home</Link></li>
+              <li><Link href="/#scanner" className="hover:text-[#9be2ff] transition-colors">Claim Scanner</Link></li>
+              <li><Link href="/#features" className="hover:text-[#9be2ff] transition-colors">Features</Link></li>
+              <li><Link href="/propagation-demo" className="hover:text-[#9be2ff] transition-colors">Spread Radar</Link></li>
+              <li><Link href="/analysis" className="hover:text-[#9be2ff] transition-colors">Intelligence Dashboard</Link></li>
+              <li><Link href="/#about" className="hover:text-[#9be2ff] transition-colors">About</Link></li>
             </ul>
           </div>
 

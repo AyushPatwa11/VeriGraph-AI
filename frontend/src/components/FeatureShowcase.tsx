@@ -45,7 +45,7 @@ export function FeatureShowcase() {
           },
         },
       }}
-      className="mx-auto w-full max-w-7xl px-6 py-16"
+      className="mx-auto w-full max-w-7xl px-6 py-16 scroll-mt-20"
     >
       <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
         Why VeriGraph feels different

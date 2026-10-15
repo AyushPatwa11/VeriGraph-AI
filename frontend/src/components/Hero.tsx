@@ -9,7 +9,7 @@ const words = ["Realtime", "Trust", "Detection"];
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-8 min-h-screen flex flex-col justify-center">
+    <section id="hero" className="relative overflow-hidden px-6 pb-20 pt-8 min-h-screen flex flex-col justify-center scroll-mt-20">
       <div className="hero-gradient pointer-events-none absolute inset-0" aria-hidden="true" />
       <ParticleBackdrop />
 

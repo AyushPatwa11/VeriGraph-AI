@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { PropagationSpread } from "@/components/PropagationSpread";
 import { LiveAmplificationFeed } from "@/components/LiveAmplificationFeed";
 import { ScoreDisplay } from "@/components/ScoreDisplay";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 
 interface AmplificationPost {
@@ -106,20 +108,25 @@ export default function PropagationDemoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-[#031019] text-white">
+      <Navbar />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="border-b border-white/10 bg-white/5 backdrop-blur-xl sticky top-0 z-40"
+        className="border-b border-white/10 bg-white/5 backdrop-blur-xl"
       >
         <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#73d6ff] animate-ping" />
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#8fd2f1]">Live Misinformation Radar</span>
+          </div>
           <h1 className="text-4xl font-bold text-white mb-2">
             Propaganda Propagation Analysis
           </h1>
-          <p className="text-gray-400">
-            Track how claims spread across 5 sources with threat assessment and
+          <p className="text-gray-300">
+            Track how claims spread across 5 real-time intelligence feeds with virality assessment and
             live amplification feed
           </p>
         </div>
@@ -261,6 +268,7 @@ export default function PropagationDemoPage() {
           </motion.div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

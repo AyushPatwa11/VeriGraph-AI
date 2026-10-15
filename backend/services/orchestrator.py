@@ -60,7 +60,7 @@ class Orchestrator:
                 "evidence": {"model": "Memory-Safe Classifier"},
             }
 
-        return self.fusion.fuse(
+        result = self.fusion.fuse(
             query=query,
             nlp_result=nlp_result,
             gnn_result=gnn_result,
@@ -69,3 +69,12 @@ class Orchestrator:
             links=links,
             posts=posts,
         )
+
+        # ── Persist to JSON database ────────────────────────────────────
+        try:
+            from services.json_db import db
+            db.save(result)
+        except Exception as db_err:
+            print(f"[json_db] Warning: could not save analysis: {db_err}")
+
+        return result

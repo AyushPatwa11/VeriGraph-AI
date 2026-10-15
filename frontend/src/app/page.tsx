@@ -41,7 +41,7 @@ export default function Home() {
       <main>
         <Hero />
 
-        <section className="relative mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="scanner" className="relative mx-auto w-full max-w-7xl px-6 py-20 scroll-mt-20">
           {/* Background elements */}
           <div className="absolute inset-0 -z-10 opacity-40">
             <div className="absolute top-0 right-0 h-80 w-80 rounded-full bg-[#73d6ff]/20 blur-3xl" />
@@ -114,7 +114,7 @@ export default function Home() {
 
         <FeatureShowcase />
 
-        <section id="about" className="relative mx-auto w-full max-w-7xl px-6 pb-20 pt-20">
+        <section id="about" className="relative mx-auto w-full max-w-7xl px-6 pb-20 pt-20 scroll-mt-20">
           {/* Background gradient */}
           <div className="absolute inset-0 -z-10 opacity-40">
             <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#7df5c5]/20 blur-3xl" />
